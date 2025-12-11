@@ -14,13 +14,15 @@
         window.MathJax = {
             tex: { inlineMath: [['\\(','\\)'], ['\\[','\\]']] },
             svg: { fontCache: 'global' }
+    
         };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
     <style>
         /* Reset básico */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0;
+            padding: 0; box-sizing: border-box; }
 
         body {
             font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -44,7 +46,7 @@
             display: flex;
             flex-direction: column;
             padding: 24px 18px;
-            gap: 8px;
+            gap: 8px; /* Espacio entre el h2 y el contenedor de botones */
             z-index: 1000; 
             transform: translateX(-100%); 
             transition: transform 0.3s ease;
@@ -58,12 +60,23 @@
         nav h2 {
             font-size: 18px;
             line-height: 1.1;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Redundante por el gap, pero lo dejamos por seguridad */
             font-weight: 600;
             letter-spacing: 0.2px;
+            /* El h2 no debe hacer scroll, está fijo en el nav */
+            flex-shrink: 0; 
         }
-
-        /* Botones de navegación */
+        
+        /* ------------------------------------------- */
+        /* CONTENEDOR DE BOTONES DESPLAZABLE           */
+        /* ------------------------------------------- */
+        #nav-buttons-container {
+            flex-grow: 1; /* Ocupa todo el espacio restante */
+            overflow-y: auto; /* Habilita la barra de desplazamiento vertical */
+            padding-right: 5px; /* Pequeño padding para evitar que la barra de desplazamiento oculte el borde del texto */
+        }
+        
+        /* Botones de navegación (Aplica a <button> y <a>) */
         .nav-btn {
             background-color: #2f4b5f;
             border: none;
@@ -78,9 +91,13 @@
             align-items: center;
             gap: 10px;
             transition: background-color 0.25s ease, transform 0.18s ease, box-shadow 0.25s ease;
+            /* Estilos para el nuevo <a> */
+            text-decoration: none; 
+            line-height: 1.2;
         }
 
-        .nav-btn i { width: 20px; text-align: center; }
+        .nav-btn i { width: 20px; text-align: center;
+        }
 
         .nav-btn:hover {
             background-color: #1abc9c;
@@ -165,21 +182,37 @@
 
 
         /* Secciones, tarjetas, fórmulas, etc. */
-        .section { display: none; opacity: 0; transform: translateY(6px); transition: opacity 0.45s ease, transform 0.45s ease; }
-        .section.active { display: block; }
-        .section.visible { opacity: 1; transform: translateY(0); }
-        .card { background: rgba(255,255,255,0.95); border-radius: 12px; padding: 1.5em; box-shadow: 0 8px 22px rgba(16,24,40,0.06); margin-bottom: 18px; line-height: 1.5; }
-        h1 { font-size: 28px; margin-bottom: 8px; }
-        h2 { font-size: 20px; margin-bottom: 8px; }
-        h3 { font-size: 16px; margin-bottom: 8px; }
-        p { margin-bottom: 12px; color: #1e293b; }
-        p[style*="font-weight:600"] { text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-        th, td { padding: 8px 10px; border-bottom: 1px solid #e6eef6; text-align: left; font-size: 0.95em; }
-        footer { margin-top: 26px; padding: 18px; border-radius: 10px; background-color: rgba(236,240,241,0.9); text-align: center; font-size: 0.9em; color: #0f172a; }
-        figure { margin: 14px 0; text-align: center; }
-        figure video { max-width: 100%; border-radius: 8px; display: inline-block; }
-        figcaption { font-size: 0.9em; color: #475569; margin-top: 6px; }
+        .section { display: none;
+            opacity: 0; transform: translateY(6px); transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+        .section.active { display: block;
+        }
+        .section.visible { opacity: 1; transform: translateY(0);
+        }
+        .card { background: rgba(255,255,255,0.95); border-radius: 12px; padding: 1.5em;
+            box-shadow: 0 8px 22px rgba(16,24,40,0.06); margin-bottom: 18px; line-height: 1.5; }
+        h1 { font-size: 28px;
+            margin-bottom: 8px; }
+        h2 { font-size: 20px; margin-bottom: 8px;
+        }
+        h3 { font-size: 16px; margin-bottom: 8px;
+        }
+        p { margin-bottom: 12px; color: #1e293b;
+        }
+        p[style*="font-weight:600"] { text-align: center;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px;
+        }
+        th, td { padding: 8px 10px; border-bottom: 1px solid #e6eef6; text-align: left;
+            font-size: 0.95em; }
+        footer { margin-top: 26px; padding: 18px; border-radius: 10px; background-color: rgba(236,240,241,0.9);
+            text-align: center; font-size: 0.9em; color: #0f172a; }
+        figure { margin: 14px 0;
+            text-align: center; }
+        figure video { max-width: 100%; border-radius: 8px; display: inline-block;
+        }
+        figcaption { font-size: 0.9em; color: #475569; margin-top: 6px;
+        }
 
 
         /* ------------------------------------------- */
@@ -322,17 +355,27 @@
         }
         
         /* Definición de colores para los tipos */
-        .type-eólica { background-color: #2ecc71; border-color: #27ae60; }
-        .type-solar { background-color: #f39c12; border-color: #e67e22; }
-        .type-hidroeléctrica { background-color: #3498db; border-color: #2980b9; }
-        .type-biomasa { background-color: #8e44ad; border-color: #9b59b6; }
-        .type-geotérmica { background-color: #e74c3c; border-color: #c0392b; }
-        .type-nuclear { background-color: #95a5a6; border-color: #7f8c8d; }
-        .type-fósil { background-color: #7f8c8d; border-color: #6c7a89; }
+        .type-eólica { background-color: #2ecc71;
+            border-color: #27ae60; }
+        .type-solar { background-color: #f39c12; border-color: #e67e22;
+        }
+        .type-hidroeléctrica { background-color: #3498db; border-color: #2980b9;
+        }
+        .type-biomasa { background-color: #8e44ad; border-color: #9b59b6;
+        }
+        .type-geotérmica { background-color: #e74c3c; border-color: #c0392b;
+        }
+        .type-nuclear { background-color: #95a5a6; border-color: #7f8c8d;
+        }
+        .type-fósil { background-color: #7f8c8d; border-color: #6c7a89;
+        }
 
-        .popup-content h4 { margin-top: 0; margin-bottom: 5px; font-size: 1.1em; color: #223044; }
-        .popup-content p { margin: 2px 0; font-size: 0.9em; }
-        .popup-content img { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 8px; margin-top: 5px; } 
+        .popup-content h4 { margin-top: 0; margin-bottom: 5px; font-size: 1.1em; color: #223044;
+        }
+        .popup-content p { margin: 2px 0; font-size: 0.9em;
+        }
+        .popup-content img { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 8px;
+            margin-top: 5px; } 
         
         /* ------------------------------------------- */
         /* RESPONSIVE Y ORIENTACIÓN HORIZONTAL (Mantenido) */
@@ -340,21 +383,32 @@
         
         /* Ocultar el contenido y mostrar advertencia en Portrait */
         @media (max-width: 768px) and (orientation: portrait) {
-            body { display: block; overflow: hidden; }
-            nav, main, footer, #menu-toggle { display: none !important; }
-            #orientation-warning { display: flex; }
+            body { display: block;
+                overflow: hidden; }
+            nav, main, footer, #menu-toggle { display: none !important;
+            }
+            #orientation-warning { display: flex;
+            }
         }
 
         /* Ajustes para pantallas más pequeñas en modo LANDSCAPE (donde sí se ve) */
         @media (max-width: 600px) and (orientation: landscape) {
-            main { padding: 15px; padding-top: 60px; }
-            #menu-toggle { top: 10px; left: 10px; width: 35px; height: 35px; font-size: 16px; }
-            h1 { font-size: 1.6em; }
-            h2 { font-size: 1.3em; }
-            .card { padding: 0.8em; }
-            nav { width: 250px; }
-            #sidebar-mapa { width: 300px; }
-            #sidebar-toggle-mapa { right: 10px; top: 10px; width: 40px; height: 40px; }
+            main { padding: 15px;
+                padding-top: 60px; }
+            #menu-toggle { top: 10px; left: 10px;
+                width: 35px; height: 35px; font-size: 16px; }
+            h1 { font-size: 1.6em;
+            }
+            h2 { font-size: 1.3em;
+            }
+            .card { padding: 0.8em;
+            }
+            nav { width: 250px;
+            }
+            #sidebar-mapa { width: 300px;
+            }
+            #sidebar-toggle-mapa { right: 10px; top: 10px; width: 40px;
+                height: 40px; }
         }
     </style>
 </head>
@@ -363,7 +417,8 @@
     <div id="orientation-warning">
         <i class="fas fa-mobile-alt"></i>
         <h2>¡Gira tu Dispositivo!</h2>
-        <p>Para garantizar la mejor experiencia de visualización del contenido técnico y las fórmulas, por favor, **rota tu celular a modo horizontal** (apaisado).</p>
+        <p>Para garantizar la mejor experiencia de visualización del contenido técnico y las fórmulas, por favor, 
+            <strong>rota tu celular a modo horizontal</strong> (apaisado).</p>
     </div>
 
     <button id="menu-toggle" onclick="toggleMenu()">
@@ -372,19 +427,25 @@
 
     <nav id="sidebar-nav">
    
+ 
      <h2>El ABC de la Energía<br><small style="font-weight:400;opacity:.9">Conceptos y Rendimiento</small></h2>
 
-        <button class="nav-btn active" id="btn-conceptos" onclick="showSection('conceptos','#f9f9f9', this)"><i class="fas fa-bolt"></i><span class="label">1.
+        <div id="nav-buttons-container">
+            <button class="nav-btn active" id="btn-conceptos" onclick="showSection('conceptos','#f9f9f9', this)"><i class="fas fa-bolt"></i><span class="label">1.
  Energía, Trabajo y Potencia</span></button>
-        <button class="nav-btn" id="btn-historia" onclick="showSection('historia','#b3e6b3', this)"><i class="fas fa-history"></i><span class="label">2.
+            <button class="nav-btn" id="btn-historia" onclick="showSection('historia','#b3e6b3', this)"><i class="fas fa-history"></i><span class="label">2.
  Historia en Argentina</span></button>
-        <button class="nav-btn" id="btn-tipos" onclick="showSection('tipos','#ffe0b3', this)"><i class="fas fa-solar-panel"></i><span class="label">3.
+            <button class="nav-btn" id="btn-tipos" onclick="showSection('tipos','#ffe0b3', this)"><i class="fas fa-solar-panel"></i><span class="label">3.
  Tipos de EERR</span></button>
-        <button class="nav-btn" id="btn-mapa" onclick="showSection('mapa','#cce0ff', this)"><i class="fas fa-map-marked-alt"></i><span class="label">4.
+            <button class="nav-btn" id="btn-mapa" onclick="showSection('mapa','#cce0ff', this)"><i class="fas fa-map-marked-alt"></i><span class="label">4.
  Mapa Interactivo</span></button>
-        <button class="nav-btn" id="btn-simulador" onclick="showSection('simulador','#ffb3d9', this)"><i class="fas fa-cogs"></i><span class="label">5.
- Calculadora de Energía</span></button>
-    </nav>
+            
+            <a class="nav-btn" id="btn-simulador" href="https://d4c7s.github.io/calcu/" target="_blank">
+                <i class="fas fa-calculator"></i><span class="label">5. Calculadora Externa (Simulador)</span>
+            </a>
+            
+        </div>
+        </nav>
 
     <main id="main-content">
 
@@ -393,7 +454,8 @@
                 <h1>La Base de Nuestra Matriz Energética: Energía, Trabajo y Potencia</h1>
                 <div>
                     <p>
-                    Cuando hablamos de energía, muchas veces escuchamos que “es la capacidad que tiene un cuerpo para realizar trabajo”.
+   
+                     Cuando hablamos de energía, muchas veces escuchamos que “es la capacidad que tiene un cuerpo para realizar trabajo”.
  Esta definición, muy usada en química y biología, suena correcta… pero a los físicos nos deja un poco inconformes.
  ¿Por qué? Porque es como decir que la energía sirve para hacer lo que hace la energía: una definición que gira en círculo.
  </p>
@@ -427,7 +489,8 @@
                     </p>
 
                     <p>
-               
+              
+  
       Y justamente ahí está lo fascinante: la energía no se crea ni se destruye, solo se transforma.
  Esto es lo que conocemos como la **Ley de Conservación de la Energía** o **Primer Principio de la Termodinámica**.
  Desde el funcionamiento de nuestro cuerpo hasta el movimiento de un atleta o la electricidad de nuestras casas, todo lo que sucede en el universo es, en el fondo, un constante intercambio y transformación de energía.
@@ -457,17 +520,19 @@
 
                     <p>
                     donde:
-               
+              
+  
       </p>
                     <ul>
                         <li>\(W\) es el trabajo (medido en joules, J),</li>
                         <li>\(F\) es la magnitud de la fuerza aplicada,</li>
-             
-                        <li>\(d\) es el desplazamiento del objeto, y</li>
+           
+                          <li>\(d\) es el desplazamiento del objeto, y</li>
                         <li>\(\theta\) es el ángulo entre la fuerza y el desplazamiento.</li>
                     </ul>
 
-                    <p>
+               
+                     <p>
           
            Es importante notar que el trabajo puede ser **negativo**.
  Esto ocurre cuando la fuerza aplicada es opuesta al desplazamiento, como la fuerza de fricción que actúa para frenar un objeto o la gravedad cuando subimos un objeto.
@@ -478,7 +543,7 @@
                     Cuando una fuerza realiza trabajo sobre un cuerpo, lo que hace es cambiar su energía.
  Si el cuerpo gana velocidad, su energía aumenta; si se eleva o comprime un resorte, la energía se almacena de otra forma.
  De ahí surgen los diferentes tipos de energía.
-                    </p>
+ </p>
 
                     <h3>Energía Cinética</h3>
                     <p>
@@ -493,11 +558,13 @@
                     <h3>Energía Potencial Gravitacional</h3>
                     <p>
                     Cuando un cuerpo se encuentra a cierta altura sobre la superficie terrestre, tiene la capacidad 
+ 
  de caer y realizar trabajo gracias a la fuerza de gravedad.
  A esa capacidad la llamamos energía potencial gravitacional, y depende de la masa del objeto, de la aceleración de la gravedad y de la altura a la que se encuentra:
                     </p>
                     <p style="font-weight:600; text-align: center;">\( E_{pg} = m \cdot g \cdot h \)</p>
                     
+ 
  <p>donde: <em>m</em> es la masa del cuerpo, <em>g</em> es la aceleración de la gravedad (9,8 m/s²) y <em>h</em> es la altura respecto a un **nivel de referencia** (el cual se elige arbitrariamente, como el suelo o el fondo de un valle).</p>
 
                     <p>
@@ -521,7 +588,7 @@
                     <p>
                     Si sumamos la energía cinética (movimiento) y la energía potencial (posición o deformación), obtenemos la energía mecánica total de un cuerpo o sistema:
               
-       </p>
+        </p>
                     <p style="font-weight:600; text-align: center;">\( E_m = E_c + E_p \)</p>
                     <p>donde \(E_p\) puede ser gravitacional o elástica, según el caso.
  En sistemas donde sólo actúan fuerzas conservativas (como la gravedad o la elasticidad), la energía mecánica total se conserva, lo que significa que no se pierde, sino que se transforma continuamente entre sus distintas formas.</p>
@@ -621,12 +688,13 @@
                     </thead>
                     <tbody>
                         <tr><td>Energía cinética</td><td>\(E_k=\tfrac{1}{2}mv^2\)</td><td>J</td></tr>
-                
+               
          <tr><td>Energía potencial gravitacional</td><td>\(E_p=mgh\)</td><td>J</td></tr>
                         <tr><td>Trabajo</td><td>\(W=F\cdot d\cdot\cos(\theta)\)</td><td>J</td></tr>
                         <tr><td>Potencia</td><td>\(P=\dfrac{W}{t}\)</td><td>W (J/s)</td></tr>
                         <tr><td>Potencia (eléctrica)</td><td>\(P=V\cdot I\)</td><td>W</td></tr>
-                        <tr><td>Energía consumida</td><td>\(E=P\cdot t\)</td><td>kWh</td></tr>
+            
+             <tr><td>Energía consumida</td><td>\(E=P\cdot t\)</td><td>kWh</td></tr>
                     </tbody>
                 </table>
             </article>
@@ -634,120 +702,117 @@
 
         <section id="historia" class="section">
             <article class="card">
-                <h1>2. Historia en Argentina: De la dependencia fósil al auge renovable</h1>
+       
+          <h1>2.
+ Historia en Argentina: De la dependencia fósil al auge renovable</h1>
                 <p>
-                La matriz energética argentina, históricamente dependiente de los hidrocarburos (gas natural y petróleo), ha experimentado un cambio de paradigma impulsado tanto por la necesidad de diversificación y seguridad energética, como por la urgencia de cumplir con los compromisos internacionales de reducción de emisiones. Sin embargo, este proceso no ha sido lineal, sino que ha estado marcado por vaivenes regulatorios y macroeconómicos que han condicionado el desarrollo de las Energías Renovables (EERR).
-                </p>
+                La matriz energética argentina, históricamente dependiente de los hidrocarburos (gas natural y petróleo), ha experimentado un cambio de paradigma impulsado tanto por la necesidad de diversificación y seguridad energética, como por la urgencia de cumplir con los compromisos internacionales de reducción de emisiones.
+ Sin embargo, este proceso no ha sido lineal, sino que ha estado marcado por vaivenes regulatorios y macroeconómicos que han condicionado el desarrollo de las Energías Renovables (EERR).
+ </p>
 
                 <h2 style="margin-top: 20px;">Entre la Potencialidad de los Recursos y las Barreras Estructurales</h2>
                 <div>
                     <p>
-                    En el actual escenario de transición energética global, impulsada por la urgencia de la crisis climática y los compromisos del Acuerdo de París, el mundo avanza decididamente hacia la descarbonización, un cambio estructural donde Argentina ocupa una posición de relevancia estratégica fundamental. El país encarna una tensión característica de las economías emergentes: posee una coexistencia única entre un vasto y excepcional potencial de recursos naturales renovables y una serie de persistentes desafíos estructurales —macroeconómicos, técnicos y regulatorios— que históricamente han condicionado su aprovechamiento. Evaluar este panorama requiere ir 
-                    más allá de las cifras superficiales para comprender la compleja interacción entre la política pública, la inversión privada y la realidad industrial del país.
-                    </p>
+                    En el actual escenario de transición energética global, impulsada por la urgencia de la crisis climática y los compromisos del Acuerdo de París, el mundo avanza decididamente hacia la descarbonización, un cambio estructural donde Argentina ocupa una posición de relevancia estratégica fundamental.
+ El país encarna una tensión característica de las economías emergentes: posee una coexistencia única entre un vasto y excepcional potencial de recursos naturales renovables y una serie de persistentes desafíos estructurales —macroeconómicos, técnicos y regulatorios— que históricamente han condicionado su aprovechamiento.
+ Evaluar este panorama requiere ir más allá de las cifras superficiales para comprender la compleja interacción entre la política pública, la inversión privada y la realidad industrial del país.
+ </p>
 
                     <h2>1. Evolución Histórica: La Primera Etapa (1998-2015)</h2>
                     <p>
                     Para entender el presente, es imperativo desglosar la evolución histórica del marco normativo, la cual revela patrones de riesgo y lecciones aprendidas que son cruciales para cualquier inversor.
-                    Una primera etapa, que abarca desde 1998 hasta 2015, se caracterizó por intentos iniciales que, si bien sentaron precedentes legislativos, arrojaron resultados sumamente limitados.
-                    </p>
+ Una primera etapa, que abarca desde 1998 hasta 2015, se caracterizó por intentos iniciales que, si bien sentaron precedentes legislativos, arrojaron resultados sumamente limitados.
+ </p>
+
                     <p>
-                    Durante este período se sancionaron leyes como la <strong>Ley 25.019</strong> en 1998 y la <strong>Ley 26.190</strong> en 2006;
-                    esta última fijó la ambiciosa meta de alcanzar un 8% del consumo eléctrico nacional con fuentes renovables para el año 2016 e implementó beneficios fiscales y remuneraciones adicionales.
-                    También se lanzó el <strong>Programa GENREN</strong> en 2009, el primer intento de utilizar subastas para contratos a 15 años en dólares.
-                    </p>
+                    La <strong>Ley 25.019</strong> de 1998 marcó el punto de partida con el objetivo de alcanzar un 8% de participación de fuentes renovables en la matriz eléctrica en un plazo de diez años (2008). Sin embargo, la inestabilidad macroeconómica y la falta de instrumentos financieros y de planificación adecuados impidieron alcanzar la meta.
+ Más adelante, en 2006, la <strong>Ley 26.190</strong> extendió el plazo hasta 2017 y estableció un régimen de fomento más detallado.
+ </p>
+
                     <p>
-                    Sin embargo, la inestabilidad regulatoria y la falta de garantías sólidas para los inversores impidieron la concreción de muchos proyectos: la mayoría de la potencia adjudicada no se construyó y la meta del 8% se incumplió.
-                    </p>
-                    
+                    Ambas leyes, aunque visionarias, fracasaron en crear un mercado robusto. Los desafíos se centraron en la falta de un mecanismo de precios atractivo para el inversor y en la ausencia de garantías claras contra el riesgo de repudio de contrato.
+ Como resultado, el avance fue marginal: al finalizar 2015, la participación renovable (sin incluir grandes hidroeléctricas) apenas superaba el 1%, y la meta del 8% se incumplió.
+ </p>
 
                     <h2>2. La Gran Transformación: Marco RenovAr y MATER (2015-Actualidad)</h2>
                     <p>
-                    La segunda etapa, iniciada en 2015 con la sanción de la <strong>Ley 27.191</strong>, representó un cambio cualitativo profundo y un hito para el sector, al elevar la meta de participación de EERR al 20% para el año 2025.
-                    Este régimen se basó en la diversificación de los mecanismos de contratación, principalmente a través del <strong>Programa RenovAr</strong> (licitaciones públicas con contratos a 20 años en dólares) y el <strong>Mercado a Término (MATER)</strong> para grandes usuarios.
-                    </p>
+                    La segunda etapa, iniciada en 2015 con la sanción de la <strong>Ley 27.191</strong>, representó un cambio cualitativo profundo y un hito para el sector, al elevar la meta de participación de EERR al 20% para el año 2025. Este régimen se basó en la diversificación de los mecanismos de contratación, principalmente a través del <strong>Programa RenovAr</strong> (licitaciones públicas con contratos a 20 años en dólares) y el <strong>Mercado a Término (MATER)</strong> para grandes usuarios.
+ </p>
+
                     <p>
                     Un componente decisivo fue la creación del Fondo Fiduciario para el Desarrollo de Energías Renovables (FODER), que no solo ofrecía financiamiento, sino que actuaba fundamentalmente como una garantía de pago para mitigar el riesgo de la contraparte estatal (CAMMESA), mejorando así la bancabilidad de los proyectos ante inversores internacionales.
-                    Posteriormente, este marco se amplió para incluir a la ciudadanía a través de la Ley 27.424 de 2017, que fomentó la Generación Distribuida, permitiendo a los usuarios inyectar excedentes a la red.
-                    Más recientemente, y ante la necesidad de atraer capital intensivo en un contexto de alto riesgo país, en 2024 se aprobó el Régimen de Incentivo para Grandes Inversiones (RIGI), que ofrece estabilidad normativa por 30 años y beneficios agresivos en materia aduanera y cambiaria.
-                    </p>
+ Posteriormente, este marco se amplió para incluir a la ciudadanía a través de la Ley 27.424 de 2017, que fomentó la Generación Distribuida, permitiendo a los usuarios inyectar excedentes a la red.
+ Más recientemente, y ante la necesidad de atraer capital intensivo en un contexto de alto riesgo país, en 2024 se aprobó el Régimen de Incentivo para Grandes Inversiones (RIGI), que ofrece estabilidad normativa por 30 años y beneficios agresivos en materia aduanera y cambiaria.
+ </p>
 
                     <h2>3. Resultados y Vulnerabilidades (2015-2023)</h2>
                     <p>
-                    El análisis de los resultados de este régimen entre 2015 y 2023 muestra un avance cuantitativo innegable pero también vulnerabilidades críticas.
-                    La potencia instalada renovable dio un salto significativo, pasando del 1.94% de la matriz en 2015 al 13.13% en 2023, logrando cubrir el 14.3% de la demanda en el balance energético global.
-                    Sin embargo, los vaivenes financieros y los cambios macroeconómicos posteriores (2018-2023) impactaron severamente en la concreción de los proyectos: mientras que en
-                    las primeras rondas de RenovAr se adjudicaron 5 GW de potencia (equivalentes a 7.500 millones de USD de inversión), los sucesivos problemas de financiamiento, devaluación y restricciones cambiarias llevaron a que cerca de un 20% de los proyectos iniciales no se terminaran.
-                    </p>
+                    El análisis de los resultados de este régimen entre 2015 y 2023 muestra un avance cuantitativo innegable pero también vulnerabilidades persistentes.
+ En un periodo de 8 años, la potencia instalada renovable (eólica y solar) se multiplicó casi 15 veces, pasando de menos de 200 MW en 2015 a más de 3.800 MW operativos en 2023. El sector logró superar la barrera del 15% de participación en la matriz eléctrica nacional, cubriendo la demanda de más de 6 millones de hogares argentinos.
+ </p>
+
                     <p>
-                    
-                    En cuanto al origen de la energía, se consolidaron el sector eólico (principalmente en Patagonia) y el solar fotovoltaico (especialmente en el NOA), 
-                    con una menor participación de biomasa y centrales hidroeléctricas de menor porte.
-                    El sector eólico, en particular, alcanzó factores de capacidad promedio anuales superiores al 40%, comparables a los mejores del mundo.
-                    </p>
+                    El crecimiento se concentró geográficamente en la energía eólica (principalmente en la Patagonia, con un 75% de la potencia total renovable) y la solar fotovoltaica (especialmente en el NOA), con una menor participación de biomasa y centrales hidroeléctricas de menor porte.
+ El sector eólico, en particular, alcanzó factores de capacidad promedio anuales superiores al 40%, comparables a los mejores del mundo.
+ </p>
 
                     <h2>4. Federalización y Desafío Industrial</h2>
                     <p>
                     La implementación de los parques eólicos y solares significó un importante proceso de federalización de la matriz, al llevar inversiones a provincias con escasa infraestructura energética previa.
-                    El impacto en la cadena de valor local, sin embargo, se limitó a servicios de ingeniería y construcción civil, con una baja integración de componentes nacionales (como aerogeneradores o células fotovoltaicas) que deben importarse.
-                    El país desarrolló una limitada capacidad de producción de torres y palas de aerogeneradores, aunque esta sigue siendo incipiente. Asimismo, el mercado se concentró en grandes actores corporativos, con una participación marginal de cooperativas o PyMEs, aunque se destaca la generación de aproximadamente 17,400 empleos directos y una federalización de las inversiones hacia regiones como la Patagonia y el NOA.
-                    </p>
+ El impacto en la cadena de valor local, sin embargo, se limitó a servicios de ingeniería y construcción civil, con una baja integración de componentes nacionales (como aerogeneradores o células fotovoltaicas) que deben importarse.
+ El país desarrolló una limitada capacidad de producción de torres y palas de aerogeneradores, aunque esta sigue siendo incipiente.
+ Asimismo, el mercado se concentró en grandes actores corporativos, con una participación marginal de cooperativas o PyMEs, aunque se destaca la generación de aproximadamente 17,400 empleos directos y una federalización de las inversiones hacia regiones como la Patagonia y el NOA.
+ </p>
 
                     <h2>5. Ventaja Competitiva: Recursos de Clase Mundial</h2>
                     <p>
                     A pesar de estos desafíos, Argentina mantiene una ventaja competitiva estructural basada en sus recursos naturales de clase mundial.
-                    El potencial eólico en la Patagonia es excepcional, con factores de capacidad que pueden llegar al 60%, superando ampliamente los promedios de Europa (25%) y Estados Unidos (35%).
-                    De igual forma, el Noroeste argentino ofrece niveles de irradiación solar entre los mejores del planeta, con rendimientos superiores en un 15-20% a otras regiones comparables.
-                    Estos recursos no solo permiten generar electricidad barata, sino que habilitan sinergias con vectores energéticos emergentes como la producción de hidrógeno verde, el desarrollo de la cadena de valor del litio y las baterías para almacenamiento, y la electromovilidad.
-                    </p>
+ El potencial eólico en la Patagonia es excepcional, con factores de capacidad que pueden llegar al 60%, superando ampliamente los promedios de Europa (25%) y Estados Unidos (35%).
+ De igual forma, el Noroeste argentino ofrece niveles de irradiación solar entre los mejores del planeta, con rendimientos superiores en un 15-20% a otras regiones comparables.
+ Estos recursos no solo permiten generar electricidad barata, sino que...
+ </p>
 
-                    <h2>6. Desafíos y Cuellos de Botella</h2>
+                    <h2>6. Desafíos Estructurales Pendientes</h2>
                     <p>
-                    Sin embargo, para capitalizar estas oportunidades, es imperativo resolver cuellos de botella críticos.
-                    En el plano técnico, la saturación de la red de transmisión eléctrica es el obstáculo físico más inmediato;
-                    la infraestructura de alta tensión está al límite y no puede evacuar la energía de las zonas con mejores recursos sin inversiones masivas.
-                    En el plano macroeconómico, la volatilidad cambiaria, la inflación crónica y la falta de acceso a crédito a tasas competitivas siguen siendo barreras que dificultan la planificación a largo plazo.
-                    Además, surgen desafíos socioambientales, como el riesgo de conflictos territoriales y la necesidad de gestionar los residuos de los equipos al final de su vida útil.
-                    </p>
+                    A pesar de los logros de la Ley 27.191, la transición se ve frenada por cuellos de botella críticos, siendo el principal la saturación de la infraestructura de transporte.
+ La capacidad de transmisión desde las regiones con mayor potencial (Patagonia y NOA) hacia los centros de consumo (GBA y Litoral) está limitada, lo que requiere inversiones urgentes en el Sistema Argentino de Interconexión (SADI).
+ Los problemas de estabilidad macroeconómica y de acceso a crédito a tasas competitivas siguen siendo barreras que dificultan la planificación a largo plazo.
+ Además, surgen desafíos socioambientales, como el riesgo de conflictos territoriales y la necesidad de gestionar los residuos de los equipos al final de su vida útil.
+ </p>
 
                     <h2>7. Conclusión: Hacia un Modelo Estratégico</h2>
                     <p>
-                    El camino hacia la meta del 20% para 2025 es factible, pero el salto hacia una matriz descarbonizada y plenamente renovable requiere una estrategia de Estado a largo plazo. 
-                    El objetivo no debe ser solo la "cantidad" de energía renovable, sino la "calidad" de la transición, evitando el riesgo de un modelo 
-                    de "extractivismo verde" que se limite a exportar recursos sin valor agregado.
-                    </p>
+                    El camino hacia la meta del 20% para 2025 es factible, pero el salto hacia una matriz descarbonizada y plenamente renovable requiere una estrategia de Estado a largo plazo.
+ El objetivo no debe ser solo la "cantidad" de energía renovable, sino la "calidad" de la transición, evitando el riesgo de un modelo de "extractivismo verde" que se limite a exportar recursos sin valor agregado.
+ </p>
                     <p>
                     La estrategia futura debe basarse en tres pilares prescriptivos: una estabilidad macroeconómica que permita financiamiento, una planificación inexcusable de la infraestructura de transmisión y una política de Estado coherente que equilibre la atracción de inversiones con el desarrollo tecnológico local y la inclusión social.
-                    La decisión que tome el país definirá si las energías renovables serán meramente un commodity de exportación o la palanca para una transformación productiva, tecnológica y social profunda en el siglo XXI.
-                    </p>
+ La decisión que tome el país definirá si las energías renovables serán meramente un commodity de exportación o la palanca para una transformación productiva, tecnológica y social profunda en el siglo XXI.
+ </p>
                 </div>
             </article>
         </section>
 
         <section id="tipos" class="section">
             <article class="card">
-                <h1>3. Tipos de Energías Renovables en Argentina</h1>
+                <h1>3.
+ Tipos de Energías Renovables en Argentina</h1>
                 <h2>🌱 Energías renovables: una introducción clara al presente y futuro de la energía</h2>
                 <p>Desde los orígenes de la humanidad, la energía ha sido fundamental para la vida cotidiana y el desarrollo de las sociedades.
  Al principio se utilizó la energía muscular, luego el fuego, y más adelante fuerzas naturales como el agua y el viento.</p>
-                <p>Con la llegada de la Revolución Industrial, la sociedad comenzó a depender cada vez más de los combustibles fósiles —carbón, petróleo y gas natural—.
- Gracias a ellos se logró un enorme desarrollo tecnológico, pero también aparecieron problemas graves como la contaminación ambiental y el calentamiento global.</p>
-                <p>Hoy el mundo atraviesa una etapa de transformación.
- La necesidad de producir energía sin dañar el planeta impulsó el crecimiento de las energías renovables, una alternativa más limpia, segura y sostenible.</p>
-                <h2>🔁 ¿Qué son las energías renovables?</h2>
-                <p>Las energías renovables son aquellas que se obtienen a partir de fuentes naturales que no se agotan con el uso, o que se regeneran continuamente en la naturaleza.</p>
+                <p>Con la llegada de la Revolución Industrial, la sociedad comenzó a depender cada vez más de los combustibles fósiles —carbón, petróleo y gas natural—, cambiando radicalmente la forma en que producimos energía y en el proceso, generando una crisis climática.</p>
+                <p>Ante este panorama, las <strong>Energías Renovables</strong> (EERR) se presentan como una solución clave, ya que provienen de fuentes que no se agotan con el uso, o que se regeneran continuamente en la naturaleza.</p>
                 <p>A diferencia del petróleo, el carbón o el gas, estas fuentes no se terminan en escalas de tiempo humanas.</p>
-                <p>Además, la mayoría de las energías renovables son también energías limpias, porque generan muy poca contaminación y reducen la emisión de gases de efecto 
- invernadero (GEI).
-                </p>
-                <p>Este compromiso con la sostenibilidad llevó al desarrollo de muchos de 
- a distintos tipos de energía que hoy se utilizan en muchos países.</p>
+                <p>Además, la mayoría de las energías renovables son también energías limpias, porque generan muy poca contaminación y reducen la emisión de gases de efecto invernadero (GEI).
+ </p>
+                <p>Este compromiso con la sostenibilidad llevó al desarrollo de muchos de a distintos tipos de energía que hoy se utilizan en muchos países.</p>
 
                 <hr style="margin: 20px 0; border-color: #eee;">
 
                 <h2>☀️ Energía solar: aprovechar la luz del Sol</h2>
                 <p>El Sol es la principal fuente de energía del planeta.
  La energía solar aprovecha su radiación para transformarla en electricidad o en calor.</p>
+                
                 <h3>Energía solar fotovoltaica</h3>
                 <p>Se obtiene mediante paneles solares que convierten directamente la luz del Sol en electricidad.
  Están formados por materiales semiconductores que permiten esta transformación.</p>
@@ -758,8 +823,10 @@
                     <li>Hospitales</li>
                     <li>Parques solares</li>
                 </ul>
+
                 <h3>Energía solar térmica</h3>
                 <p>Utiliza el calor del Sol para calentar agua o fluidos, que luego sirven para calefacción o para producir vapor y generar electricidad.</p>
+
                 <p><strong>✅ Ventajas</strong></p>
                 <ul>
                     <li>Fuente inagotable</li>
@@ -777,31 +844,33 @@
                 <h2>🌬️ Energía eólica: la fuerza del viento</h2>
                 <p>La energía eólica transforma la fuerza del viento 
  en electricidad. El viento mueve las aspas de los aerogeneradores, y ese movimiento se convierte en energía eléctrica.</p>
+
                 <p><strong>Se instala en zonas donde el viento es constante, como:</strong></p>
                 <ul>
                     <li>Regiones costeras</li>
                     <li>Llanuras abiertas</li>
                     <li>Zonas elevadas</li>
+                    <li>Grandes parques en tierra (onshore) o en el mar (offshore)</li>
                 </ul>
-                <p>En Argentina, la Patagonia posee uno de los mayores potenciales eólicos del mundo.</p>
+
                 <p><strong>✅ Ventajas</strong></p>
                 <ul>
-                    <li>No produce contaminación</li>
-                    <li>Genera grandes cantidades de energía</li>
-                    <li>Funciona de día y de noche (si hay viento)</li>
+                    <li>Fuente inagotable</li>
+                    <li>Costo de operación bajo</li>
+                    <li>No produce emisiones contaminantes</li>
                 </ul>
                 <p><strong>⚠️ Desventajas</strong></p>
                 <ul>
-                    <li>Depende de la intensidad del viento (es intermitente)</li>
-                    <li>Impacto visual y sonoro (en el entorno cercano)</li>
+                    <li>Es intermitente (solo genera con viento)</li>
+                    <li>Impacto visual y acústico</li>
+                    <li>Riesgo para las aves</li>
                 </ul>
 
                 <hr style="margin: 20px 0; border-color: #eee;">
 
-                <h2>💧 Energía hidráulica: la 
- fuerza del agua en movimiento</h2>
-                <p>La energía hidráulica utiliza el movimiento del agua de ríos y embalses para generar electricidad.
- Las grandes centrales suelen construirse en embalses, donde la fuerza del agua es conducida a través de tuberías hasta las turbinas, que giran para generar electricidad.</p>
+                <h2>💧 Energía hidroeléctrica: la fuerza del agua</h2>
+                <p>La energía hidroeléctrica transforma la energía potencial (posición) y cinética (movimiento) del agua en electricidad. Las centrales suelen construirse en embalses, donde la fuerza del agua es conducida a través de tuberías hasta las turbinas, que giran para generar electricidad.</p>
+
                 <p><strong>✅ Ventajas</strong></p>
                 <ul>
                     <li>Producción muy estable y predecible</li>
@@ -816,11 +885,11 @@
 
                 <hr style="margin: 20px 0; border-color: #eee;">
 
-                <h2>🌋 Energía geotérmica: el 
- calor de la Tierra</h2>
+                <h2>🌋 Energía geotérmica: el calor de la Tierra</h2>
                 <p>En el interior del planeta existe una enorme cantidad de calor.
  La energía geotérmica aprovecha ese calor para producir vapor, mover turbinas o calefaccionar edificios.</p>
-                                <p>Se utiliza principalmente en regiones con actividad volcánica o donde el calor está cerca de la superficie.</p>
+
+                <p>Se utiliza principalmente en regiones con actividad volcánica o donde el calor está cerca de la superficie.</p>
                 <p><strong>✅ Ventajas</strong></p>
                 <ul>
                     <li>Producción continua (las 24 horas del día)</li>
@@ -836,16 +905,18 @@
                 <hr style="margin: 20px 0; border-color: #eee;">
 
                 <h2>🌾 Energía de biomasa: energía a partir de residuos</h2>
-                <p>La biomasa es materia orgánica de origen vegetal o animal que se utiliza 
- para producir energía.</p>
+                <p>La biomasa es materia orgánica de origen vegetal o animal que se utiliza para producir energía.</p>
+
                 <p><strong>Incluye:</strong></p>
                 <ul>
-                    <li>Restos de cultivos y residuos agroindustriales</li>
+                    <li>Restos de 
+ cultivos y residuos agroindustriales</li>
                     <li>Residuos ganaderos (estiércol)</li>
                     <li>Madera y subproductos forestales</li>
                     <li>Desechos orgánicos urbanos</li>
                 </ul>
                 <p>De la biomasa se obtienen biocombustibles, como el biogás, el biodiésel y el bioetanol.</p>
+
                 <p><strong>✅ Ventajas</strong></p>
                 <ul>
                     <li>Aprovecha residuos (doble beneficio: energía y limpieza)</li>
@@ -858,154 +929,123 @@
                     <li>Requiere grandes superficies de cultivo (en el caso de cultivos energéticos)</li>
                 </ul>
 
-                <hr style="margin: 20px 0; border-color: #eee;">
-
-                <h2>🌊 Energía del mar: mareas y olas</h2>
-                <p>El movimiento constante del mar puede aprovecharse de dos formas principales para generar electricidad:</p>
-                <ul>
-                    <li><strong>Energía mareomotriz:</strong> aprovecha las subidas y bajadas de las mareas.</li>
-                    <li><strong>Energía undimotriz:</strong> aprovecha el movimiento cinético de las olas.</li>
-                </ul>
-                <p>Estas tecnologías aún están en desarrollo, pero tienen un gran potencial a futuro en zonas costeras.</p>
             </article>
         </section>
 
         <section id="mapa" class="section">
             <article class="card">
                 <h1>4. Mapa Interactivo de Centrales Energéticas</h1>
-                <p>Utiliza el mapa para explorar las principales centrales de generación de energía en Argentina. Haz clic en los íconos para ver detalles de la producción y el tipo de fuente.</p>
+                <p>Explora la ubicación de algunas de las principales centrales de generación de energía en Argentina. Haz clic en los íconos para ver detalles de la producción y el tipo de fuente.</p>
                 <div id="leaflet-map"></div>
+                
                 <button id="sidebar-toggle-mapa" onclick="toggleSidebarMap()">
                     <i class="fas fa-list"></i>
                 </button>
+
                 <div id="sidebar-mapa">
                     <h2>Centrales Destacadas</h2>
                     <p>Haga clic en un elemento de la lista para centrar el mapa en la planta, o haga clic en un marcador en el mapa para ver sus detalles.</p>
                     <div id="plant-list-container">
-                        </div>
-                </div>
-            </article>
-        </section>
-        
-        <section id="simulador" class="section">
-            <article class="card">
-                <h1>5. Calculadora de Energía</h1>
-                <p>Bienvenido a la Calculadora de Energía. Esta sección te permite estimar el rendimiento de un sistema fotovoltaico (solar) básico en función de la radiación solar y el consumo eléctrico, y comparar su impacto ambiental.</p>
-
-                <h2 style="margin-top: 20px;">Datos de Consumo Eléctrico</h2>
-                <p>Ingresa tus datos de consumo promedio para el cálculo.</p>
-
-                <label for="consumo-anual">Consumo Eléctrico Anual (kWh):</label>
-                <input type="number" id="consumo-anual" value="3000" min="0">
-
-                <label for="factor-capacidad-solar">Factor de Capacidad Solar (%):</label>
-                <input type="number" id="factor-capacidad-solar" value="20" min="5" max="30">
-                <small style="display: block; margin-top: -10px; margin-bottom: 20px; color: #6c757d;">(Factor de Capacidad Solar promedio para Argentina es 18%-24%)</small>
-
-                <button onclick="calcular()">Calcular Potencia Requerida</button>
-
-                <div id="resultados-simulador" style="margin-top: 25px;">
-                    <h3>Resultados de la Calculadora:</h3>
-                    <p><strong>Potencia del Sistema Requerida:</strong> <span id="potencia-requerida">0</span> kWp</p>
-                    <p><strong>Energía Generada Anual Estimada:</strong> <span id="energia-anual">0</span> kWh</p>
-                    <p><strong>Módulos Solares (aprox.):</strong> <span id="modulos-solares">0</span> de 550Wp</p>
-                    <p style="margin-top: 15px;"><strong>Reducción de CO2 Anual:</strong> <span id="reduccion-co2">0</span> kg</p>
-                    <p><strong>Árboles Equivalentes:</strong> <span id="arboles-equivalentes">0</span> árboles</p>
+                    </div>
                 </div>
 
-                <div style="margin-top: 30px; padding: 15px; background: #fff0f0; border-radius: 8px; border-left: 5px solid #e74c3c;">
-                    <p style="font-weight: bold; color: #e74c3c; margin-bottom: 5px;">⚠️ Nota sobre el cálculo:</p>
-                    <p style="margin-bottom: 0;">Esta es una estimación simplificada. El cálculo real requiere considerar factores como pérdidas por inversores, sombreado, orientación del techo, y tarifas de inyección/consumo.</p>
-                </div>
-                
             </article>
         </section>
 
-        <footer id="footer-card" class="card">
-            <p><strong>El ABC de la Energía</strong> — Conceptos Fundamentales y Rendimiento. Proyecto Educativo 2024.</p>
-            <p style="font-size: 0.8em; color: #999; margin-top: 5px;">Nota: La información del mapa es un ejemplo didáctico basado en datos públicos, pero simplificado para fines de demostración.</p>
+        <footer>
+            <p>Proyecto didáctico sobre Energía, Trabajo y Potencia.</p>
         </footer>
+
+
     </main>
 
     <script>
-        /* Variables y Configuración */
-        const sidebarNav = document.getElementById('sidebar-nav');
-        const menuToggle = document.getElementById('menu-toggle');
-        const mainContent = document.getElementById('main-content');
-        const sections = document.querySelectorAll('.section');
-        const navButtons = document.querySelectorAll('.nav-btn');
-        let map = null;
-        let markers = {};
+        // Data para el mapa
+        let map;
+        let markers = [];
+        let highlightTimeout;
 
-        /* ------------------------------------------- */
-        /* DATOS DEL MAPA (Confirmado con Assets/ y producción) */
-        /* ------------------------------------------- */
         const plantsData = [
             { id: 1, nombre: "Parque Eólico Arauco", tipo: "eólica", lat: -30.0768, lng: -67.0908, imagen: "Assets/arauco.jpg", produccion: "620 GWh/año", provincia: "La Rioja" },
             { id: 2, nombre: "Parque Solar Cauchari", tipo: "solar", lat: -23.7550, lng: -66.9050, imagen: "Assets/cauchari.jpg", produccion: "1050 GWh/año", provincia: "Jujuy" },
             { id: 3, nombre: "Central Hidroeléctrica Yacyretá", tipo: "hidroeléctrica", lat: -27.4861, lng: -56.7667, imagen: "Assets/yacyreta.jpg", produccion: "18500 GWh/año", provincia: "Corrientes" },
             { id: 4, nombre: "Central Termoeléctrica Costanera", tipo: "fósil", lat: -34.6142, lng: -58.3497, imagen: "Assets/costanera.jpg", produccion: "9000 GWh/año", provincia: "Buenos Aires" },
-            { id: 5, nombre: "Central Nuclear Atucha II", tipo: "nuclear", lat: -33.9786, lng: -59.2078, imagen: "Assets/atucha.jpg", produccion: "5500 GWh/año", provincia: "Buenos Aires" },
+            { id: 5, nombre: "Central Nuclear Atucha II", tipo: "nuclear", lat: 
+ -33.9786, lng: -59.2078, imagen: "Assets/atucha.jpg", produccion: "5500 GWh/año", provincia: "Buenos Aires" },
             { id: 6, nombre: "Biomasa Puerto Tirol", tipo: "biomasa", lat: -27.3500, lng: -59.0833, imagen: "Assets/tirol.jpg", produccion: "85 GWh/año", provincia: "Chaco" },
             { id: 7, nombre: "Parque Eólico Madryn", tipo: "eólica", lat: -42.8100, lng: -65.1700, imagen: "Assets/madryn.jpg", produccion: "1500 GWh/año", provincia: "Chubut" },
             { id: 8, nombre: "Parque Solar San Juan", tipo: "solar", lat: -31.5375, lng: -68.5361, imagen: "Assets/sanjuan.jpg", produccion: "400 GWh/año", provincia: "San Juan" }
         ];
 
         /* ------------------------------------------- */
-        /* FUNCIONES DE NAVEGACIÓN Y MENÚ              */
+        /* FUNCIONES DE NAVEGACIÓN Y MENÚ */
         /* ------------------------------------------- */
+
+        // Esta es la función que abre y cierra el menú
         function toggleMenu() {
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const menuToggle = document.getElementById('menu-toggle');
+            
+            // Si el dispositivo está en modo portrait, no hacer nada
+            if (window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
+                return;
+            }
+
             sidebarNav.classList.toggle('active');
+
+            if (sidebarNav.classList.contains('active')) {
+                menuToggle.innerHTML = '<i class="fas fa-times"></i>'; // Icono de cierre (X)
+            } else {
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>'; // Icono de hamburguesa
+            }
         }
 
-        function showSection(sectionId, color, buttonElement) {
-            // Oculta todas las secciones
-            sections.forEach(section => {
-                section.classList.remove('active', 'visible');
-            });
-            // Desactiva todos los botones
-            navButtons.forEach(btn => {
-                btn.classList.remove('active');
+        // Esta es la función que cambia de sección
+        function showSection(sectionId, bodyColor, clickedButton) {
+            // 1. Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+                section.classList.remove('visible'); 
             });
 
-            // Muestra la sección solicitada y el botón
+            // 2. Mostrar la sección pedida y ajustar el color de fondo
             const targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.classList.add('active');
-                // Aplica la transición de visibilidad con un pequeño delay
-                setTimeout(() => {
-                    targetSection.classList.add('visible');
-                }, 100);
-            }
-            if (buttonElement) {
-                buttonElement.classList.add('active');
+                // Forzar reflow para que la transición CSS se aplique
+                void targetSection.offsetHeight; 
+                targetSection.classList.add('visible');
+
+                // Lógica para inicializar el mapa si la sección es 'mapa'
+                if (sectionId === 'mapa' && !window.mapInitialized) {
+                    if (typeof initMap === 'function') { 
+                         initMap();
+                    }
+                }
+
+                document.body.style.backgroundColor = bodyColor;
             }
 
-            // Lógica específica para la sección del mapa
-            if (sectionId === 'mapa') {
-                if (!map) {
-                    initializeMap();
-                } else {
-                    // Asegurar que el mapa tome la altura correcta después de la inicialización
-                    map.invalidateSize();
-                }
-            } else {
-                // Destruir el mapa si no estamos en la sección para liberar recursos
-                if (map) {
-                    map.remove();
-                    map = null;
-                }
+            // 3. Desactivar el botón activo previamente y activar el nuevo
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (clickedButton) {
+                clickedButton.classList.add('active');
             }
 
-            // Cambia colores con transición suave
-            document.body.style.backgroundColor = color;
-            document.querySelector('main').style.backgroundColor = 'transparent';
-            document.getElementById('footer-card').style.backgroundColor = 'rgba(236,240,241,0.9)';
+            // 4. Cierra el menú desplegable si está abierto
+            const sidebarNav = document.getElementById('sidebar-nav');
+            if (sidebarNav.classList.contains('active')) {
+                toggleMenu();
+            }
         }
 
         /* ------------------------------------------- */
-        /* FUNCIONES ESPECÍFICAS DEL MAPA (Leaflet) */
+        /* FUNCIONES ESPECÍFICAS DEL MAPA */
         /* ------------------------------------------- */
+
         const typeIcons = {
             eólica: { icon: 'fa-wind', color: '#2ecc71' },
             solar: { icon: 'fa-sun', color: '#f39c12' },
@@ -1023,8 +1063,8 @@
                 className: 'custom-div-icon',
                 html: iconHtml,
                 iconSize: [30, 30],
-                iconAnchor: [15, 30], 
-                popupAnchor: [0, -30] 
+                iconAnchor: [15, 30],
+                popupAnchor: [0, -30]
             });
         }
 
@@ -1044,138 +1084,100 @@
         }
 
         function addPlantMarkers() {
+            markers = []; // Limpiar marcadores existentes
             plantsData.forEach(plant => {
                 const customIcon = createCustomIcon(plant.tipo);
-                const marker = L.marker([plant.lat, plant.lng], { icon: customIcon })
+                const marker = L.marker([plant.lat, plant.lng], { icon: customIcon, title: plant.nombre })
                     .bindPopup(createPopupContent(plant));
                 
-                marker.on('click', () => {
+                marker.on('click', (e) => {
+                    // Si la lista lateral está cerrada, la abre
+                    if (!document.getElementById('sidebar-mapa').classList.contains('open')) {
+                        toggleSidebarMap();
+                    }
                     highlightPlant(plant.id);
                 });
 
-                markers[plant.id] = marker.addTo(map);
+                marker.addTo(map);
+                markers.push(marker);
             });
         }
 
         function populatePlantList() {
-            const listContainer = document.getElementById('plant-list-container');
-            listContainer.innerHTML = ''; 
-
+            const container = document.getElementById('plant-list-container');
+            container.innerHTML = ''; 
             plantsData.forEach(plant => {
                 const iconData = typeIcons[plant.tipo];
                 const typeLabel = plant.tipo.charAt(0).toUpperCase() + plant.tipo.slice(1);
-                const item = document.createElement('div');
-                item.className = 'plant-item';
-                item.id = `plant-item-${plant.id}`;
-                item.innerHTML = `
-                    <h3><span class="icon" style="color: ${iconData.color};"><i class="fas ${iconData.icon}"></i></span>${plant.nombre}</h3>
+                const plantItem = document.createElement('div');
+                plantItem.className = 'plant-item';
+                plantItem.id = `plant-item-${plant.id}`;
+                plantItem.innerHTML = `
+                    <h3><span class="icon" style="color: ${iconData.color}"><i class="fas ${iconData.icon}"></i></span>${plant.nombre}</h3>
                     <p>Tipo: ${typeLabel}</p>
                     <p>Provincia: ${plant.provincia}</p>
                 `;
-                item.onclick = () => {
-                    const marker = markers[plant.id];
-                    if (marker) {
-                        map.setView(marker.getLatLng(), 8); 
-                        marker.openPopup(); 
-                        highlightPlant(plant.id);
-                    }
-                };
-                listContainer.appendChild(item);
+                plantItem.onclick = () => centerMapOnPlant(plant.id);
+                container.appendChild(plantItem);
             });
         }
 
-        function initializeMap() {
-            // Coordenadas centrales de Argentina
-            const centerLat = -34;
-            const centerLng = -64;
+        function centerMapOnPlant(plantId) {
+            const plant = plantsData.find(p => p.id === plantId);
+            const targetMarker = markers.find(m => m.options.title === plant.nombre);
 
-            map = L.map('leaflet-map', {
-                center: [centerLat, centerLng],
-                zoom: 4, 
-                minZoom: 3, 
-                maxZoom: 10, 
-                zoomControl: false 
-            });
+            if (plant && targetMarker) {
+                map.setView([plant.lat, plant.lng], 7); // Centra el mapa con un nivel de zoom adecuado
+                targetMarker.openPopup(); // Abre el popup del marcador
 
-            // Añadir capa de tiles (OpenStreetMap)
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
+                // Manejo de resaltado en la lista
+                highlightPlant(plantId);
 
-            // Añadir control de zoom personalizado en otra posición
-            L.control.zoom({ position: 'topright' }).addTo(map);
-
-            // Llenar la lista lateral y añadir los marcadores
-            populatePlantList();
-            addPlantMarkers();
-
-            // Asegurar que el mapa tome la altura correcta
-            setTimeout(() => {
-                map.invalidateSize();
-            }, 0);
+                // Asegura que el elemento de la lista sea visible
+                const listItem = document.getElementById(`plant-item-${plantId}`);
+                if (listItem) {
+                    listItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
         }
 
         function highlightPlant(plantId) {
+            // Limpiar resaltados previos
             document.querySelectorAll('.plant-item').forEach(item => {
                 item.classList.remove('highlighted');
             });
-            const itemToHighlight = document.getElementById(`plant-item-${plantId}`);
-            if (itemToHighlight) {
-                itemToHighlight.classList.add('highlighted');
-                itemToHighlight.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+            // Resaltar el nuevo elemento
+            const listItem = document.getElementById(`plant-item-${plantId}`);
+            if (listItem) {
+                listItem.classList.add('highlighted');
             }
+
+            // Eliminar el resaltado después de un tiempo
+            clearTimeout(highlightTimeout);
+            highlightTimeout = setTimeout(() => {
+                if (listItem) {
+                    listItem.classList.remove('highlighted');
+                }
+            }, 5000); 
+        }
+
+        function initMap() {
+            if (window.mapInitialized) return;
+
+            map = L.map('leaflet-map').setView([-34.0, -64.0], 4); // Centro inicial en Argentina
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            addPlantMarkers();
+            populatePlantList();
+
+            window.mapInitialized = true;
         }
 
         function toggleSidebarMap() {
             document.getElementById('sidebar-mapa').classList.toggle('open');
-        }
-
-        /* ------------------------------------------- */
-        /* FUNCIONES ESPECÍFICAS DEL SIMULADOR/CALCULADORA */
-        /* ------------------------------------------- */
-        function calcular() {
-            // Obtener valores de los inputs
-            const consumoAnual = parseFloat(document.getElementById('consumo-anual').value);
-            const factorCapacidadSolar = parseFloat(document.getElementById('factor-capacidad-solar').value) / 100; // Convertir a decimal
-
-            if (isNaN(consumoAnual) || consumoAnual <= 0 || isNaN(factorCapacidadSolar) || factorCapacidadSolar <= 0) {
-                alert("Por favor, ingrese valores válidos y positivos para el Consumo Anual y el Factor de Capacidad.");
-                return;
-            }
-
-            // Constantes
-            const HORAS_ANIO = 8760;
-            const MODULO_WATTS = 550; // Wp
-            const CO2_POR_KWH = 0.45; // kg de CO2 por kWh (Estimación de la matriz argentina, puede variar)
-            const ABSORCION_CO2_ARBOL = 12; // kg de CO2 por año por árbol (Estimación)
-
-            // 1. Cálculo de la Potencia Requerida (kWp)
-            // Fórmula: Potencia_kWp = Consumo_kWh_anual / (Factor_Capacidad * HORAS_ANIO)
-            const potenciaRequerida = consumoAnual / (factorCapacidadSolar * HORAS_ANIO);
-
-            // 2. Energía Anual Generada (es igual al consumo si la potencia es correcta, pero se calcula para consistencia)
-            const energiaAnualGenerada = potenciaRequerida * factorCapacidadSolar * HORAS_ANIO;
-
-            // 3. Módulos Solares Requeridos (aproximado)
-            // Fórmula: Módulos = (Potencia_kWp * 1000) / MODULO_WATTS
-            const modulosRequeridos = Math.ceil((potenciaRequerida * 1000) / MODULO_WATTS);
-
-            // 4. Reducción de CO2
-            // Fórmula: Reducción_CO2 = Energía_Generada * CO2_POR_KWH
-            const reduccionCO2 = energiaAnualGenerada * CO2_POR_KWH;
-
-            // 5. Árboles Equivalentes
-            // Fórmula: Arboles = Reducción_CO2 / ABSORCION_CO2_ARBOL
-            const arbolesEquivalentes = Math.round(reduccionCO2 / ABSORCION_CO2_ARBOL);
-
-
-            // Mostrar resultados
-            document.getElementById('potencia-requerida').textContent = potenciaRequerida.toFixed(2);
-            document.getElementById('energia-anual').textContent = energiaAnualGenerada.toFixed(0);
-            document.getElementById('modulos-solares').textContent = modulosRequeridos;
-            document.getElementById('reduccion-co2').textContent = reduccionCO2.toFixed(0);
-            document.getElementById('arboles-equivalentes').textContent = arbolesEquivalentes;
         }
 
         /* ------------------------------------------- */
@@ -1186,10 +1188,17 @@
             if (visible) visible.classList.add('visible');
             document.body.style.backgroundColor = '#f9f9f9';
 
+            // Elementos del menú para el cierre al hacer clic fuera
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const menuToggle = document.getElementById('menu-toggle');
+            const navButtons = document.querySelectorAll('.nav-btn'); 
+
             // Cierra el menú si se hace clic fuera de él
             document.addEventListener('click', (e) => {
                 const target = e.target;
-                const isNavButton = navButtons.some(btn => btn.contains(target));
+                
+                // Convertir NodeList a Array para usar .some y .contains
+                const isNavButton = Array.from(navButtons).some(btn => btn.contains(target));
                 const isInsideNav = sidebarNav.contains(target);
                 const isMenuToggle = menuToggle.contains(target);
 
@@ -1198,8 +1207,6 @@
                 }
             });
             
-            // Inicializar la calculadora al cargar la página con valores por defecto
-            calcular();
         });
     </script>
 
